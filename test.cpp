@@ -90,8 +90,19 @@ int main(int argc, char** argv) {
 	test_ctx(ctx, pixel, color);
 	delete ctx;
 
-    fprintf(stderr, "passed.\n");
+	ctx = GContext::Create(1000000, 1000000);
+	assert(!ctx);
+
+	bitmap.fRowBytes = 1000;
+	ctx = GContext::Create(bitmap);
+	assert(!ctx);
+
+	bitmap.fRowBytes = 4003;
+	ctx = GContext::Create(bitmap);
+	assert(!ctx);
+
+	fprintf(stderr, "passed.\n");
 	delete[] storage;
-    return 0;
+	return 0;
 }
 
