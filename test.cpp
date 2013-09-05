@@ -14,7 +14,7 @@ static void inline original_test_case() {
     GContext* ctx = GContext::Create(W, H);
     if (!ctx) {
         fprintf(stderr, "GContext::Create failed\n");
-        assert(-1)
+        assert(-1);
     }
 
     const GColor color = { 1, 1, 0, 0 };
