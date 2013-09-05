@@ -138,6 +138,15 @@ int main(int argc, char** argv) {
 	test_ctx(ctx, pixel, color);
 	delete ctx;
 
+	ctx = GContext::Create(100, 100);
+	color.fA = 0.5;
+	color.fR = 1.0;
+	color.fG = 0.0;
+	color.fB = 0.5;
+	pixel = 0x80800040;
+	test_ctx(ctx, pixel, color);
+	delete ctx;
+
 	ctx = GContext::Create(1000000, 1000000);
 	assert(!ctx);
 
