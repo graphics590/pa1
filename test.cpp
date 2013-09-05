@@ -142,6 +142,9 @@ int main(int argc, char** argv) {
 	ctx = GContext::Create(bitmap);
 	assert(!ctx);
 
+	ctx = GContext::Create( -1, -1 );
+	assert(!ctx);
+
 	fprintf(stderr, "passed.\n");
 	delete[] storage;
 	return 0;
