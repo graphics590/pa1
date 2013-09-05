@@ -14,7 +14,7 @@ static void inline original_test_case() {
     GContext* ctx = GContext::Create(W, H);
     if (!ctx) {
         fprintf(stderr, "GContext::Create failed\n");
-        assert(-1);
+        assert(0);
     }
 
     const GColor color = { 1, 1, 0, 0 };
@@ -27,7 +27,7 @@ static void inline original_test_case() {
 
     if (W != bitmap.fWidth || H != bitmap.fHeight) {
         fprintf(stderr, "unexpected width/height [%d %d]\n", bitmap.fWidth, bitmap.fHeight);
-        assert(-1);
+        assert(0);
     }
 
     for (int y = 0; y < W; ++y) {
@@ -37,13 +37,13 @@ static void inline original_test_case() {
             if (pixel != value) {
                 fprintf(stderr, "at (%d, %d) expected %x but got %x\n",
                         x, y, pixel, value);
-                assert(-1);
+                assert(0);
             }
         }
     }
 
     delete ctx;
-    fprintf(stderr, "passed.\n");
+    fprintf(stderr, "passed basic test.\n");
 }
 
 static void inline assert_pixels(GContext* ctx, GPixel pixel) {
@@ -51,7 +51,10 @@ static void inline assert_pixels(GContext* ctx, GPixel pixel) {
 	ctx->getBitmap(&bm);
 	for (int y = 0; y < bm.fHeight; ++y) {
 		for (int x = 0; x < bm.fWidth; ++x)
-			assert (bm.fPixels[y * bm.fRowBytes/4 + x] == pixel);
+			if (bm.fPixels[y * bm.fRowBytes/4 + x] != pixel) {
+				fprintf(stderr, "Got %x, expected %x\n", bm.fPixels[y * bm.fRowBytes/4 + x], pixel);
+				assert(0);
+			}
 		for (int x = 0; x < bm.fRowBytes - bm.fWidth * 4; x++)
 			assert(((char*)bm.fPixels)[y * bm.fRowBytes + bm.fWidth*4 + x] == 0);
 	}
@@ -113,6 +116,8 @@ int main(int argc, char** argv) {
 	delete ctx;
 
 	ctx = GContext::Create(100000, 1);
+	color.fR = 0.49999; color.fG = 0.25098;
+	pixel = 0xff7f4000;
 	test_ctx(ctx, pixel, color);
 	delete ctx;
 
@@ -121,6 +126,8 @@ int main(int argc, char** argv) {
 	delete ctx;
 
 	ctx = GContext::Create(10000, 10000);
+	color.fR = 0.5; color.fG = 0.25099;
+	pixel = 0xff804000;
 	test_ctx(ctx, pixel, color);
 	delete ctx;
 
