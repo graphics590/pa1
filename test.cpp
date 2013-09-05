@@ -14,7 +14,7 @@ static void inline original_test_case() {
     GContext* ctx = GContext::Create(W, H);
     if (!ctx) {
         fprintf(stderr, "GContext::Create failed\n");
-        return -1;
+        assert(-1)
     }
 
     const GColor color = { 1, 1, 0, 0 };
@@ -27,7 +27,7 @@ static void inline original_test_case() {
 
     if (W != bitmap.fWidth || H != bitmap.fHeight) {
         fprintf(stderr, "unexpected width/height [%d %d]\n", bitmap.fWidth, bitmap.fHeight);
-        return -1;
+        assert(-1);
     }
 
     for (int y = 0; y < W; ++y) {
@@ -37,14 +37,13 @@ static void inline original_test_case() {
             if (pixel != value) {
                 fprintf(stderr, "at (%d, %d) expected %x but got %x\n",
                         x, y, pixel, value);
-                return -1;
+                assert(-1);
             }
         }
     }
 
     delete ctx;
     fprintf(stderr, "passed.\n");
-    return 0;
 }
 
 static void inline assert_pixels(GContext* ctx, GPixel pixel) {
